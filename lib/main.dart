@@ -11,13 +11,6 @@ import 'api_service.dart';
 import 'navigation_cubit.dart';
 
 void main() {
-  SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
-      statusBarColor: Color(0xFF187A3F), // Same green color
-      statusBarIconBrightness: Brightness.light, // Icons will be white
-      statusBarBrightness: Brightness.dark, // For iOS: white status bar
-    ),
-  );
   runApp(const MyApp());
 }
 
@@ -54,11 +47,18 @@ class HubPage extends StatelessWidget {
       builder: (context, currentIndex) {
         return Stack(
           children: [
-            Container(
-              height: MediaQuery.of(context).padding.top,
-              color: const Color(0xFF187A3F),
-            ),
             Scaffold(
+              appBar: AppBar(
+                title: Center(
+                  child: Container(
+                    child: ElevatedButton(
+                        onPressed: () => print("something"),
+                        child: Text("add searchbar later")
+                    ),
+                  ),
+                ),
+                backgroundColor: Color(0xFF187A3F),
+              ),
               backgroundColor: Colors.white,
               body: _pages[currentIndex],
               bottomNavigationBar: CustomBottomBar(

@@ -21,15 +21,6 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          // Searchbar
-          Container(
-            margin: EdgeInsets.only(top: statusBarHeight),
-            height: 50,
-            width: screenWidth,
-            color: Color(0xFF187A3F),
-            child: const Center(child: Text("add searchbar later")),
-          ),
-          // List widget
           Expanded(
             child: ListView(
               children: [

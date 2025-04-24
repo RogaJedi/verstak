@@ -35,7 +35,6 @@ class ProductCard extends StatelessWidget {
             width: screenWidth * 0.5,
             height: screenHeight * 0.205,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
               color: Colors.white,
             ),
             child: Stack(
@@ -45,10 +44,6 @@ class ProductCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ClipRRect(
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(15),
-                        topRight: Radius.circular(15),
-                      ),
                       child: Image.network(
                         product.image,
                         height: screenHeight * 0.13,
