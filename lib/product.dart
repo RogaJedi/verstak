@@ -7,7 +7,7 @@ class Product {
   final String image;
   final double reviewScore;
   final int amountOfReviews;
-  final String eventId;
+  final List<String> tags;
 
   Product({
     required this.productId,
@@ -18,6 +18,6 @@ class Product {
     required this.image,
     required this.reviewScore,
     required this.amountOfReviews,
-    required this.eventId
+    required this.tags
   });
 }

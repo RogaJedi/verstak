@@ -7,6 +7,7 @@ import 'package:verstak/pages/home_page.dart';
 import 'package:verstak/pages/user_page.dart';
 import 'package:verstak/widgets/custom_bottom_bar.dart';
 
+import 'api_service.dart';
 import 'navigation_cubit.dart';
 
 void main() {
@@ -35,11 +36,13 @@ class MyApp extends StatelessWidget {
   }
 }
 
+final apiService = MockApiService();
+
 class HubPage extends StatelessWidget {
   HubPage({super.key});
 
   final List<Widget> _pages = [
-    HomePage(),
+    HomePage(apiService: apiService,),
     GiftsPage(),
     CartPage(),
     UserPage(),
@@ -49,26 +52,35 @@ class HubPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<NavigationCubit, int>(
       builder: (context, currentIndex) {
-        return Scaffold(
-          body: _pages[currentIndex],
-          bottomNavigationBar: CustomBottomBar(
-            activeIcons: [
-              'assets/home_filled.svg',
-              'assets/gift_filled.svg',
-              'assets/cart_filled.svg',
-              'assets/user_filled.svg',
-            ],
-            inactiveIcons: [
-              'assets/home_empty.svg',
-              'assets/gift_empty.svg',
-              'assets/cart_empty.svg',
-              'assets/user_empty.svg',
-            ],
-            onTap: (index) {
-              context.read<NavigationCubit>().setPage(index);
-            },
-            backgroundColor: const Color(0xFF187A3F),
-          ),
+        return Stack(
+          children: [
+            Container(
+              height: MediaQuery.of(context).padding.top,
+              color: const Color(0xFF187A3F),
+            ),
+            Scaffold(
+              backgroundColor: Colors.white,
+              body: _pages[currentIndex],
+              bottomNavigationBar: CustomBottomBar(
+                activeIcons: [
+                  'assets/home_filled.svg',
+                  'assets/gift_filled.svg',
+                  'assets/cart_filled.svg',
+                  'assets/user_filled.svg',
+                ],
+                inactiveIcons: [
+                  'assets/home_empty.svg',
+                  'assets/gift_empty.svg',
+                  'assets/cart_empty.svg',
+                  'assets/user_empty.svg',
+                ],
+                onTap: (index) {
+                  context.read<NavigationCubit>().setPage(index);
+                },
+                backgroundColor: const Color(0xFF187A3F),
+              ),
+            ),
+          ],
         );
       },
     );

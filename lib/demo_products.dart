@@ -1,6 +1,6 @@
 import 'package:verstak/product.dart';
 
-List<Product> DemoProfucts = [
+List<Product> DemoProducts = [
   Product(
       productId: "0",
       name: "Кольцо-часы",
@@ -10,7 +10,7 @@ List<Product> DemoProfucts = [
       image: "https://ir.ozone.ru/s3/multimedia-f/w500/6809668575.jpg",
       reviewScore: 5,
       amountOfReviews: 10,
-      eventId: ""
+      tags: []
   ),
   Product(
       productId: "1",
@@ -21,7 +21,7 @@ List<Product> DemoProfucts = [
       image: "https://ir.ozone.ru/s3/multimedia-1-6/c1000/7052697834.jpg",
       reviewScore: 5,
       amountOfReviews: 10,
-      eventId: ""
+      tags: []
   ),
   Product(
       productId: "2",
@@ -32,7 +32,7 @@ List<Product> DemoProfucts = [
       image: "https://s1.babiki.ru/uploads/images/media/2022/11/25/11/ede2cbc347.jpg",
       reviewScore: 5,
       amountOfReviews: 10,
-      eventId: ""
+      tags: []
   ),
   Product(
       productId: "3",
@@ -43,7 +43,7 @@ List<Product> DemoProfucts = [
       image: "https://avatars.dzeninfra.ru/get-zen_doc/2811422/pub_60b9f2b3b680955261023822_60b9f82abcbf42494e652b68/scale_1200",
       reviewScore: 5,
       amountOfReviews: 10,
-      eventId: ""
+      tags: ["кольцо"]
   ),
   Product(
       productId: "4",
@@ -54,7 +54,7 @@ List<Product> DemoProfucts = [
       image: "https://ae04.alicdn.com/kf/Hfaf70580561843159bab49d26615bd340.jpg",
       reviewScore: 5,
       amountOfReviews: 10,
-      eventId: ""
+      tags: ["кольцо", "именное"]
   ),
   Product(
       productId: "5",
@@ -65,7 +65,7 @@ List<Product> DemoProfucts = [
       image: "https://personal-gold.ru/images/personal-gold/catalog/161/image-sm/19007201.jpg",
       reviewScore: 5,
       amountOfReviews: 10,
-      eventId: ""
+      tags: ["кольцо"]
   ),
   Product(
       productId: "6",
@@ -76,7 +76,7 @@ List<Product> DemoProfucts = [
       image: "https://magazin.blagozvon.ru/upload/iblock/d04/d04053f1ee1ef11cfbddd62170d1f5f0.jpg",
       reviewScore: 5,
       amountOfReviews: 10,
-      eventId: "пасха"
+      tags: ["пасха"]
   ),
   Product(
       productId: "7",
@@ -87,7 +87,7 @@ List<Product> DemoProfucts = [
       image: "https://ist.say7.info/img0002/92/292_0191rcd_6206_1024.jpg",
       reviewScore: 5,
       amountOfReviews: 10,
-      eventId: "пасха"
+      tags: ["пасха"]
   ),
   Product(
       productId: "8",
@@ -98,7 +98,7 @@ List<Product> DemoProfucts = [
       image: "https://lavka-obitel.ru/media/catalog/product/cache/d09283a545639437f21bf6bea6bc2364/1/_/1_179.jpg",
       reviewScore: 5,
       amountOfReviews: 10,
-      eventId: "пасха"
+      tags: ["пасха"]
   ),
   Product(
       productId: "9",
@@ -109,6 +109,6 @@ List<Product> DemoProfucts = [
       image: "https://www.chefmarket.ru/blog/wp-content/uploads/2023/04/nemeckie-pashalnye-zajcy-e1680596103889.jpg",
       reviewScore: 5,
       amountOfReviews: 10,
-      eventId: "пасха"
+      tags: ["пасха"]
   ),
 ];
