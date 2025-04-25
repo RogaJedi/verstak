@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:verstak/pages/product_page.dart';
 
 import '../../api_service.dart';
 import '../../product.dart';
@@ -10,14 +11,21 @@ import 'PC_SM/PC_State.dart';
 class ProductCard extends StatelessWidget {
   final Product product;
   final ApiService apiService;
-  final Function() onTap;
 
   const ProductCard({
     super.key,
     required this.product,
     required this.apiService,
-    required this.onTap
   });
+
+  void navigateToProductPage(BuildContext context, Product product) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ProductPage(product: product),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +38,9 @@ class ProductCard extends StatelessWidget {
           apiService: apiService,
         )..add(CheckFavoriteStatusEvent(productId: product.productId)),
         child: GestureDetector(
-          onTap: onTap,
+          onTap: () => navigateToProductPage(context, product),
           child: Container(
-            width: screenWidth * 0.5,
+            width: screenWidth * 0.45,
             height: screenHeight * 0.205,
             decoration: BoxDecoration(
               color: Colors.white,

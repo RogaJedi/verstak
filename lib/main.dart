@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:verstak/pages/cart_page.dart';
 import 'package:verstak/pages/gifts_page.dart';
 import 'package:verstak/pages/home_page.dart';
-import 'package:verstak/pages/user_page.dart';
+import 'package:verstak/pages/user/user_page.dart';
 import 'package:verstak/widgets/custom_bottom_bar.dart';
 
 import 'api_service.dart';
