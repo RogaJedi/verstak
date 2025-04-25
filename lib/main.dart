@@ -36,7 +36,7 @@ class HubPage extends StatelessWidget {
 
   final List<Widget> _pages = [
     HomePage(apiService: apiService,),
-    GiftsPage(),
+    GiftsPage(apiService: apiService,),
     CartPage(),
     UserPage(),
   ];

@@ -1,8 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:verstak/widgets/celebration_item.dart';
+
+import '../api_service.dart';
+import '../demo_celebrations.dart';
+import '../demo_products.dart';
+import '../widgets/product_card/product_card.dart';
 
 class GiftsPage extends StatelessWidget {
-  const GiftsPage({super.key});
+
+  final ApiService apiService;
+
+  const GiftsPage({
+    super.key,
+    required this.apiService
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -11,36 +22,46 @@ class GiftsPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             const Text(
-                "Для каждого праздника свой подарок!",
+              "Для каждого праздника свой подарок!",
               style: TextStyle(
-                fontSize: 30
+                  fontSize: 30
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Optional: for spacing
-              children: [
-                SvgPicture.asset(
-                  'assets/birthday.svg',
-                  width: 60, // Specify desired width
-                  height: 60, // Specify desired height
-                ),
-                SvgPicture.asset(
-                  'assets/kosmonavtika.svg',
-                  width: 60,
-                  height: 60,
-                ),
-                SvgPicture.asset(
-                  'assets/marrage.svg',
-                  width: 60,
-                  height: 60,
-                ),
-                SvgPicture.asset(
-                  'assets/paskha.svg',
-                  width: 60,
-                  height: 60,
-                ),
-              ],
-
+            SizedBox(
+              height: 120,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: DemoCelebrations.length,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: CelebrationItem(celebration: DemoCelebrations[index]),
+                  );
+                },
+              ),
+            ),
+            Divider(),
+            Expanded(
+                child: ListView(
+                  children: [
+                    GridView.builder(
+                      shrinkWrap: true, // Add this
+                      physics: NeverScrollableScrollPhysics(), // Add this
+                      padding: const EdgeInsets.all(8),
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 1,
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 15,
+                      ),
+                      itemCount: DemoProducts.length,
+                      itemBuilder: (context, index) {
+                        return ProductCard(product: DemoProducts[index], apiService: apiService,);
+                      },
+                    ),
+                  ],
+                )
             )
           ],
         )

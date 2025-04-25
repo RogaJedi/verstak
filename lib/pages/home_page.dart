@@ -68,7 +68,7 @@ class HomePage extends StatelessWidget {
                         crossAxisCount: 2,
                         childAspectRatio: 1,
                         crossAxisSpacing: 10,
-                        mainAxisSpacing: 15,
+                        mainAxisSpacing: 10,
                       ),
                       itemCount: DemoProducts.length,
                       itemBuilder: (context, index) {

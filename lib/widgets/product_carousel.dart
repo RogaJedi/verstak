@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:verstak/widgets/product_card/product_card.dart';
 import '../api_service.dart';
 import '../product.dart';
@@ -18,23 +19,37 @@ class ProductCarousel extends StatelessWidget {
 
     final screenHeight = MediaQuery.of(context).size.height;
 
-    return SizedBox(
-      height: screenHeight * 0.25,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: products.length,
-        itemBuilder: (context, index) {
-          return Center(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ProductCard(
-                product: products[index],
-                apiService: apiService,
-              ),
-            ),
-          );
-        },
-      ),
+    return Stack(
+      children: [
+        SizedBox(
+          height: screenHeight * 0.25,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: products.length,
+            itemBuilder: (context, index) {
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ProductCard(
+                    product: products[index],
+                    apiService: apiService,
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+        Positioned(
+          top: 0,
+            bottom: 0,
+            right: 2.5,
+            child: SvgPicture.asset(
+              'assets/arrow.svg',
+              width: 17.5,
+              height: 17.5,
+            )
+        )
+      ],
     );
   }
 }
