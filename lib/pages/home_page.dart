@@ -46,7 +46,6 @@ class HomePage extends StatelessWidget {
                       ),
                     ),
                     ProductCarousel(
-                      products: DemoProducts,
                       apiService: apiService,
                     ),
 
@@ -66,9 +65,9 @@ class HomePage extends StatelessWidget {
                       padding: const EdgeInsets.all(8),
                       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
-                        childAspectRatio: 1,
+                        childAspectRatio: 0.825,
                         crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
+                        mainAxisSpacing: 20,
                       ),
                       itemCount: DemoProducts.length,
                       itemBuilder: (context, index) {

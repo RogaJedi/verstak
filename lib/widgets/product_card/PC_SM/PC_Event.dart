@@ -1,7 +1,7 @@
 abstract class ProductCardEvent {}
 
 class ToggleFavoriteEvent extends ProductCardEvent {
-  final String productId;
+  final int productId;
 
   ToggleFavoriteEvent({required this.productId});
 }
@@ -13,7 +13,7 @@ class InitializeFavoriteEvent extends ProductCardEvent {
 }
 
 class CheckFavoriteStatusEvent extends ProductCardEvent {
-  final String productId;
+  final int productId;
 
   CheckFavoriteStatusEvent({required this.productId});
 }

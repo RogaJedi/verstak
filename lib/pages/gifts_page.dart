@@ -51,7 +51,7 @@ class GiftsPage extends StatelessWidget {
                       padding: const EdgeInsets.all(8),
                       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
-                        childAspectRatio: 1,
+                        childAspectRatio: 0.825,
                         crossAxisSpacing: 10,
                         mainAxisSpacing: 15,
                       ),

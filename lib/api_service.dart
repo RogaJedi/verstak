@@ -1,49 +1,80 @@
-abstract class ApiService {
-  Future<void> addToFavorites(String productId);
-  Future<void> removeFromFavorites(String productId);
-  Future<List<String>> getFavoriteIds();
-
-  Future<void> updateStatus(String orderId, int status);
-  Future<int> getStatus(String orderId);
-}
-
-class MockApiService implements ApiService {
-
-  final Set<String> _favoriteIds = {};
-
-  final Map<String, int> _orderStatus = {};
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:verstak/product.dart';
 
 
-  @override
-  Future<void> addToFavorites(String productId) async {
-    _favoriteIds.add(productId);
+class ApiService {
+  final SupabaseClient _client = Supabase.instance.client;
+
+  static const String _favoritesTable = 'favorite_product';
+
+  Future<void> addToFavorites(int productId) async {
+    await _client.from(_favoritesTable).insert({
+      'user_id': _client.auth.currentUser!.id,
+      'product_id': productId,
+    });
   }
 
-  @override
-  Future<void> removeFromFavorites(String productId) async {
-    _favoriteIds.remove(productId);
+  Future<void> removeFromFavorites(int productId) async {
+    await _client.from(_favoritesTable)
+        .delete()
+        .match({
+      'user_id': _client.auth.currentUser!.id,
+      'product_id': productId,
+    });
   }
 
-  @override
   Future<List<String>> getFavoriteIds() async {
-    return _favoriteIds.toList();
+    final response = await _client.from(_favoritesTable)
+        .select('product_id')
+        .eq('user_id', _client.auth.currentUser!.id);
+
+    return (response as List).map((item) => item['product_id'] as String).toList();
   }
 
-  Future<bool> isFavorite(String productId) async {
-    return _favoriteIds.contains(productId);
+  Future<bool> isFavorite(int productId) async {
+    final response = await _client.from(_favoritesTable)
+        .select()
+        .match({
+      'user_id': _client.auth.currentUser!.id,
+      'product_id': productId,
+    });
+
+    return (response as List).isNotEmpty;
   }
 
   Future<void> clearFavorites() async {
-    _favoriteIds.clear();
+    await _client.from(_favoritesTable)
+        .delete()
+        .eq('user_id', _client.auth.currentUser!.id);
   }
 
-  @override
-  Future<void> updateStatus(String orderId, int status) async {
-    _orderStatus[orderId] = status;
+  Future<List<Product>> getProducts() async {
+    final response = await _client.from('product').select();
+
+    return (response as List)
+        .map((item) => Product.fromJson(item))
+        .toList();
   }
 
-  @override
-  Future<int> getStatus(String orderId) async {
-    return _orderStatus[orderId] ?? 0;
+  Future<Product?> getProductById(int productId) async {
+    final response = await _client
+        .from('product')
+        .select()
+        .eq('product_id', productId)
+        .maybeSingle();
+
+    if (response == null) return null;
+    return Product.fromJson(response);
   }
+
+  Future<List<Product>> getProductsByTag(String tag) async {
+    final response = await _client
+        .from('product')
+        .select()
+        .contains('tags', [tag]);
+    return (response as List)
+        .map((item) => Product.fromJson(item))
+        .toList();
+  }
+
 }

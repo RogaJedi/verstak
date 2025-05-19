@@ -54,7 +54,7 @@ class ProductCardBloc extends Bloc<ProductCardEvent, ProductCardState> {
     try {
       emit(state.copyWith(isLoading: true, error: null));
 
-      final isFavorite = await (apiService as MockApiService).isFavorite(event.productId);
+      final isFavorite = await apiService.isFavorite(event.productId);
 
       emit(state.copyWith(
         favorite: isFavorite,

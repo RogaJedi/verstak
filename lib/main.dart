@@ -1,21 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:verstak/pages/cart_page.dart';
 import 'package:verstak/pages/gifts_page.dart';
 import 'package:verstak/pages/home_page.dart';
 import 'package:verstak/pages/user/user_page.dart';
 import 'package:verstak/widgets/custom_bottom_bar.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'api_service.dart';
 import 'navigation_cubit.dart';
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await dotenv.load(fileName: ".env");
+
+  final supabaseUrl = dotenv.env['SUPABASE_URL'] ?? '';
+  final supabaseAnonKey = dotenv.env['SUPABASE_ANON_KEY'] ?? '';
+
+  if (supabaseUrl.isEmpty || supabaseAnonKey.isEmpty) {
+    throw Exception('Err: no SUPABASE_URL or SUPABASE_ANON_KEY');
+  }
+
+  await Supabase.initialize(
+    url: supabaseUrl,
+    anonKey: supabaseAnonKey,
+  );
+
+  final apiService = ApiService();
+
+  runApp(MyApp(apiService: apiService));
 }
 
+
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final ApiService apiService;
+  const MyApp({
+    super.key,
+    required this.apiService,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,23 +48,28 @@ class MyApp extends StatelessWidget {
       create: (context) => NavigationCubit(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: HubPage(),
+        home: HubPage(apiService: apiService,),
       ),
     );
   }
 }
 
-final apiService = MockApiService();
 
 class HubPage extends StatelessWidget {
-  HubPage({super.key});
+  final ApiService apiService;
+  late final List<Widget> _pages;
 
-  final List<Widget> _pages = [
-    HomePage(apiService: apiService,),
-    GiftsPage(apiService: apiService,),
-    CartPage(),
-    UserPage(),
-  ];
+  HubPage({
+    super.key,
+    required this.apiService,
+  }) {
+    _pages = [
+      HomePage(apiService: apiService),
+      GiftsPage(apiService: apiService),
+      CartPage(),
+      UserPage(),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {

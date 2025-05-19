@@ -27,7 +27,7 @@ class ProductPage extends StatelessWidget {
 
               ClipRRect(
                 child: Image.network(
-                  product.image,
+                  product.images[0],
                   height: screenHeight * 0.45,
                   width: double.infinity,
                   fit: BoxFit.cover,

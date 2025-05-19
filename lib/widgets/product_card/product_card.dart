@@ -41,7 +41,7 @@ class ProductCard extends StatelessWidget {
           onTap: () => navigateToProductPage(context, product),
           child: Container(
             width: screenWidth * 0.45,
-            height: screenHeight * 0.205,
+            height: screenHeight * 0.25,
             decoration: BoxDecoration(
               color: Colors.white,
             ),
@@ -53,8 +53,8 @@ class ProductCard extends StatelessWidget {
                   children: [
                     ClipRRect(
                       child: Image.network(
-                        product.image,
-                        height: screenHeight * 0.13,
+                        product.images[0],
+                        height: screenHeight * 0.18,
                         width: double.infinity,
                         fit: BoxFit.cover,
                       ),
@@ -140,7 +140,7 @@ class ProductCard extends StatelessWidget {
                       return IconButton(
                         icon: Icon(
                           state.favorite ? Icons.favorite : Icons.favorite_border,
-                          color: Colors.white,
+                          color: state.favorite ? Color(0xFFFF6183) : Colors.white,
                         ),
                         onPressed: () {
                           context.read<ProductCardBloc>().add(
