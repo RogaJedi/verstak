@@ -5,7 +5,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:verstak/pages/cart_page.dart';
 import 'package:verstak/pages/gifts_page.dart';
 import 'package:verstak/pages/home_page.dart';
+import 'package:verstak/pages/user/login_page.dart';
 import 'package:verstak/pages/user/user_page.dart';
+import 'package:verstak/pages/user/welcome_page.dart';
 import 'package:verstak/product.dart';
 import 'package:verstak/product_loader/products_cubit.dart';
 import 'package:verstak/widgets/custom_bottom_bar.dart';
@@ -105,18 +107,29 @@ class HubPage extends StatelessWidget {
       HomePage(apiService: apiService, products: products,),
       GiftsPage(apiService: apiService, products: products,),
       CartPage(),
-      UserPage(),
+      WelcomePage(),
+      LoginPage(),
     ];
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<NavigationCubit, int>(
-      builder: (context, currentIndex) {
+    return BlocBuilder<NavigationCubit, NavigationState>(
+      builder: (context, state) {
         return Stack(
           children: [
             Scaffold(
               appBar: AppBar(
+                actions: [
+                  state.showBackButton
+                      ? IconButton(
+                      onPressed: () {
+                        context.read<NavigationCubit>().setPage(state.index - 1, false);
+                      },
+                      icon: Icon(Icons.arrow_back_ios_rounded, color: Colors.white)
+                  )
+                      : SizedBox.shrink()
+                ],
                 title: Center(
                   child: Container(
                     child: ElevatedButton(
@@ -126,9 +139,10 @@ class HubPage extends StatelessWidget {
                   ),
                 ),
                 backgroundColor: Color(0xFF187A3F),
+
               ),
               backgroundColor: Colors.white,
-              body: _pages[currentIndex],
+              body: _pages[state.index],
               bottomNavigationBar: CustomBottomBar(
                 activeIcons: [
                   'assets/home_filled.svg',
@@ -143,7 +157,7 @@ class HubPage extends StatelessWidget {
                   'assets/user_empty.svg',
                 ],
                 onTap: (index) {
-                  context.read<NavigationCubit>().setPage(index);
+                  context.read<NavigationCubit>().setPage(index, false);
                 },
                 backgroundColor: const Color(0xFF187A3F),
               ),

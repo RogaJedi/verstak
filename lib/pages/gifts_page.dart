@@ -28,6 +28,7 @@ class GiftsPage extends StatelessWidget {
               style: TextStyle(
                   fontSize: 30
               ),
+              textAlign: TextAlign.center,
             ),
             SizedBox(
               height: 120,

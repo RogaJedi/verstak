@@ -25,7 +25,10 @@ class CelebrationItem extends StatelessWidget {
             height: 60,
           ),
           const SizedBox(height: 8), // Add some space between icon and text
-          Text(celebration.name),
+          Text(
+            celebration.name,
+            textAlign: TextAlign.center,
+          ),
         ],
       ),
     );
