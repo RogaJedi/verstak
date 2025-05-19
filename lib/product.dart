@@ -3,7 +3,8 @@ import 'package:equatable/equatable.dart';
 class Product extends Equatable {
   final int productId;
   final String name;
-  final String seller;
+  final String sellerId;
+  final String? sellerName;
   final String description;
   final int price;
   final List<String> images;
@@ -14,7 +15,8 @@ class Product extends Equatable {
   const Product({
     required this.productId,
     required this.name,
-    required this.seller,
+    required this.sellerId,
+    this.sellerName,
     required this.description,
     required this.price,
     required this.images,
@@ -27,7 +29,8 @@ class Product extends Equatable {
     return Product(
       productId: json['id'] as int,
       name: json['title'] as String,
-      seller: json['seller_id'] as String,
+      sellerId: json['seller_id'] as String,
+      sellerName: json['seller_name'] as String?,
       description: json['description'] as String,
       price: json['price_kp'] as int,
       images: (json['images'] as List).map((item) => item.toString()).toList(),
@@ -38,10 +41,10 @@ class Product extends Equatable {
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    final map = {
       'id': productId,
       'title': name,
-      'seller_id': seller,
+      'seller_id': sellerId,
       'description': description,
       'price_kp': price,
       'images': images,
@@ -49,12 +52,19 @@ class Product extends Equatable {
       'reviews_count': amountOfReviews,
       'tags': tags,
     };
+
+    if (sellerName != null) {
+      map['seller_name'] = sellerName as Object;
+    }
+
+    return map;
   }
 
   Product copyWith({
     int? productId,
     String? name,
-    String? seller,
+    String? sellerId,
+    String? sellerName,
     String? description,
     int? price,
     List<String>? images,
@@ -65,7 +75,8 @@ class Product extends Equatable {
     return Product(
       productId: productId ?? this.productId,
       name: name ?? this.name,
-      seller: seller ?? this.seller,
+      sellerId: sellerId ?? this.sellerId,
+      sellerName: sellerName ?? this.sellerName,
       description: description ?? this.description,
       price: price ?? this.price,
       images: images ?? this.images,
@@ -79,7 +90,8 @@ class Product extends Equatable {
   List<Object?> get props => [
     productId,
     name,
-    seller,
+    sellerId,
+    sellerName,
     description,
     price,
     images,
@@ -88,3 +100,4 @@ class Product extends Equatable {
     tags,
   ];
 }
+

@@ -77,4 +77,21 @@ class ApiService {
         .toList();
   }
 
+  Future<String> getSellerById(String id) async {
+    try {
+      final response = await _client
+          .from('seller')
+          .select('display_name')
+          .eq('user_id', id)
+          .maybeSingle();
+
+      if (response == null) return "Продавец не найден";
+
+      return response['display_name'] as String;
+    } catch (e) {
+      print('Err: $e');
+      return "Err";
+    }
+  }
+
 }

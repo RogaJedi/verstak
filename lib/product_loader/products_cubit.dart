@@ -17,7 +17,19 @@ class ProductsCubit extends Cubit<ProductsState> {
     try {
       emit(ProductsLoading());
       final products = await apiService.getProducts();
-      emit(ProductsLoaded(products));
+      final sellerIds = products.map((p) => p.sellerId).toSet();
+
+      final Map<String, String> sellerNames = {};
+      for (final sellerId in sellerIds) {
+        sellerNames[sellerId] = await apiService.getSellerById(sellerId);
+      }
+
+      final enrichedProducts = products.map((product) {
+        return product.copyWith(
+            sellerName: sellerNames[product.sellerId]
+        );
+      }).toList();
+      emit(ProductsLoaded(enrichedProducts));
     } catch (e) {
       emit(ProductsError(e.toString()));
     }
