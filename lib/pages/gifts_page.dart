@@ -3,16 +3,18 @@ import 'package:verstak/widgets/celebration_item.dart';
 
 import '../api_service.dart';
 import '../demo_celebrations.dart';
-import '../demo_products.dart';
+import '../product.dart';
 import '../widgets/product_card/product_card.dart';
 
 class GiftsPage extends StatelessWidget {
 
   final ApiService apiService;
+  final List<Product> products;
 
   const GiftsPage({
     super.key,
-    required this.apiService
+    required this.apiService,
+    required this.products
   });
 
   @override
@@ -55,9 +57,9 @@ class GiftsPage extends StatelessWidget {
                         crossAxisSpacing: 10,
                         mainAxisSpacing: 15,
                       ),
-                      itemCount: DemoProducts.length,
+                      itemCount: products.length,
                       itemBuilder: (context, index) {
-                        return ProductCard(product: DemoProducts[index], apiService: apiService,);
+                        return ProductCard(product: products[index], apiService: apiService,);
                       },
                     ),
                   ],

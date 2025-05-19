@@ -6,10 +6,13 @@ import 'package:verstak/pages/cart_page.dart';
 import 'package:verstak/pages/gifts_page.dart';
 import 'package:verstak/pages/home_page.dart';
 import 'package:verstak/pages/user/user_page.dart';
+import 'package:verstak/product.dart';
+import 'package:verstak/product_loader/products_cubit.dart';
 import 'package:verstak/widgets/custom_bottom_bar.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'api_service.dart';
+import 'loading_screen.dart';
 import 'navigation_cubit.dart';
 
 Future<void> main() async {
@@ -44,11 +47,43 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => NavigationCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => NavigationCubit()),
+        BlocProvider(create: (context) => ProductsCubit(apiService: apiService)),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: HubPage(apiService: apiService,),
+        home: BlocBuilder<ProductsCubit, ProductsState>(
+          builder: (context, state) {
+            if (state is ProductsLoaded) {
+              final products = (context.read<ProductsCubit>().state as ProductsLoaded).products;
+              return HubPage(products: products, apiService: apiService,);
+            }
+            if (state is ProductsError) {
+              return Scaffold(
+                body: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.error_outline, size: 60, color: Colors.red),
+                      const SizedBox(height: 20),
+                      Text('Ошибка: ${state.message}'),
+                      const SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: () {
+                          context.read<ProductsCubit>().loadProducts();
+                        },
+                        child: const Text('Повторить'),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }
+            return const LoadingScreen();
+          },
+        ),
       ),
     );
   }
@@ -56,16 +91,19 @@ class MyApp extends StatelessWidget {
 
 
 class HubPage extends StatelessWidget {
-  final ApiService apiService;
   late final List<Widget> _pages;
+  final List<Product> products;
+  final ApiService apiService;
+
 
   HubPage({
     super.key,
+    required this.products,
     required this.apiService,
   }) {
     _pages = [
-      HomePage(apiService: apiService),
-      GiftsPage(apiService: apiService),
+      HomePage(apiService: apiService, products: products,),
+      GiftsPage(apiService: apiService, products: products,),
       CartPage(),
       UserPage(),
     ];

@@ -6,68 +6,50 @@ import '../product.dart';
 
 class ProductCarousel extends StatelessWidget {
   final ApiService apiService;
+  final List<Product> products;
 
   const ProductCarousel({
     super.key,
     required this.apiService,
+    required this.products,
   });
 
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
 
-    return FutureBuilder<List<Product>>(
-      future: apiService.getProducts(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: Text("Пожалуйста подождите..."));
-        }
-
-        if (snapshot.hasError) {
-          print(snapshot.error);
-          return Center(child: Text('Err: ${snapshot.error}'));
-        }
-
-        if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return const Center(child: Text('No products'));
-        }
-
-        final products = snapshot.data!;
-
-        return Stack(
-          children: [
-            SizedBox(
-              height: screenHeight * 0.3,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: products.length,
-                itemBuilder: (context, index) {
-                  final product = products[index];
-                  return Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ProductCard(
-                        product: product,
-                        apiService: apiService,
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-            Positioned(
-                top: 0,
-                bottom: 0,
-                right: 2.5,
-                child: SvgPicture.asset(
-                  'assets/arrow.svg',
-                  width: 17.5,
-                  height: 17.5,
-                )
+    return Stack(
+      children: [
+        SizedBox(
+          height: screenHeight * 0.3,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: products.length,
+            itemBuilder: (context, index) {
+              final product = products[index];
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ProductCard(
+                    product: product,
+                    apiService: apiService,
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+        Positioned(
+            top: 0,
+            bottom: 0,
+            right: 2.5,
+            child: SvgPicture.asset(
+              'assets/arrow.svg',
+              width: 17.5,
+              height: 17.5,
             )
-          ],
-        );
-      },
+        )
+      ],
     );
   }
 }

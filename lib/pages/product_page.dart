@@ -24,7 +24,6 @@ class ProductPage extends StatelessWidget {
         children: [
           ListView(
             children: [
-
               ClipRRect(
                 child: Image.network(
                   product.images[0],
