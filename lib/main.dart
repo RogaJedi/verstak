@@ -5,7 +5,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:verstak/pages/cart_page.dart';
 import 'package:verstak/pages/gifts_page.dart';
 import 'package:verstak/pages/home_page.dart';
-import 'package:verstak/pages/user/login_page.dart';
 import 'package:verstak/pages/user/user_page.dart';
 import 'package:verstak/pages/user/welcome_page.dart';
 import 'package:verstak/product.dart';
@@ -14,6 +13,7 @@ import 'package:verstak/widgets/custom_bottom_bar.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'api_service.dart';
+import 'auth/auth_cubit.dart';
 import 'loading_screen.dart';
 import 'navigation_cubit.dart';
 
@@ -53,6 +53,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => NavigationCubit()),
         BlocProvider(create: (context) => ProductsCubit(apiService: apiService)),
+        BlocProvider(create: (context) => AuthCubit()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -63,6 +64,7 @@ class MyApp extends StatelessWidget {
               return HubPage(products: products, apiService: apiService,);
             }
             if (state is ProductsError) {
+              print(state.message);
               return Scaffold(
                 body: Center(
                   child: Column(
@@ -93,7 +95,6 @@ class MyApp extends StatelessWidget {
 
 
 class HubPage extends StatelessWidget {
-  late final List<Widget> _pages;
   final List<Product> products;
   final ApiService apiService;
 
@@ -102,67 +103,61 @@ class HubPage extends StatelessWidget {
     super.key,
     required this.products,
     required this.apiService,
-  }) {
-    _pages = [
-      HomePage(apiService: apiService, products: products,),
-      GiftsPage(apiService: apiService, products: products,),
-      CartPage(),
-      WelcomePage(),
-      LoginPage(),
-    ];
-  }
+  });
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<NavigationCubit, NavigationState>(
-      builder: (context, state) {
-        return Stack(
-          children: [
-            Scaffold(
-              appBar: AppBar(
-                actions: [
-                  state.showBackButton
-                      ? IconButton(
-                      onPressed: () {
-                        context.read<NavigationCubit>().setPage(state.index - 1, false);
-                      },
-                      icon: Icon(Icons.arrow_back_ios_rounded, color: Colors.white)
-                  )
-                      : SizedBox.shrink()
-                ],
-                title: Center(
-                  child: Container(
-                    child: ElevatedButton(
-                        onPressed: () => print("something"),
-                        child: Text("add searchbar later")
+    return BlocBuilder<NavigationCubit, int>(
+      builder: (context, currentIndex) {
+        return BlocBuilder<AuthCubit, AppAuthState>(
+          builder: (context, authState) {
+            final List<Widget> pages = [
+              HomePage(apiService: apiService, products: products),
+              GiftsPage(apiService: apiService, products: products),
+              CartPage(),
+              authState is AuthAuthenticated
+                  ? UserPage()
+                  : WelcomePage(apiService: apiService, products: products),
+            ];
+
+            return Stack(
+              children: [
+                Scaffold(
+                  appBar: AppBar(
+                    title: Center(
+                      child: Container(
+                        child: ElevatedButton(
+                            onPressed: () => print("something"),
+                            child: Text("add searchbar later")
+                        ),
+                      ),
                     ),
+                    backgroundColor: Color(0xFF187A3F),
+                  ),
+                  backgroundColor: Colors.white,
+                  body: pages[currentIndex],
+                  bottomNavigationBar: CustomBottomBar(
+                    activeIcons: [
+                      'assets/home_filled.svg',
+                      'assets/gift_filled.svg',
+                      'assets/cart_filled.svg',
+                      'assets/user_filled.svg',
+                    ],
+                    inactiveIcons: [
+                      'assets/home_empty.svg',
+                      'assets/gift_empty.svg',
+                      'assets/cart_empty.svg',
+                      'assets/user_empty.svg',
+                    ],
+                    onTap: (index) {
+                      context.read<NavigationCubit>().setPage(index);
+                    },
+                    backgroundColor: const Color(0xFF187A3F),
                   ),
                 ),
-                backgroundColor: Color(0xFF187A3F),
-
-              ),
-              backgroundColor: Colors.white,
-              body: _pages[state.index],
-              bottomNavigationBar: CustomBottomBar(
-                activeIcons: [
-                  'assets/home_filled.svg',
-                  'assets/gift_filled.svg',
-                  'assets/cart_filled.svg',
-                  'assets/user_filled.svg',
-                ],
-                inactiveIcons: [
-                  'assets/home_empty.svg',
-                  'assets/gift_empty.svg',
-                  'assets/cart_empty.svg',
-                  'assets/user_empty.svg',
-                ],
-                onTap: (index) {
-                  context.read<NavigationCubit>().setPage(index, false);
-                },
-                backgroundColor: const Color(0xFF187A3F),
-              ),
-            ),
-          ],
+              ],
+            );
+          },
         );
       },
     );

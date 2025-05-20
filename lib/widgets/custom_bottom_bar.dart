@@ -57,7 +57,7 @@ class CustomBottomBar extends StatelessWidget {
       ) {
     final screenWidth = MediaQuery.of(context).size.width;
 
-    return BlocBuilder<NavigationCubit, NavigationState>(
+    return BlocBuilder<NavigationCubit, int>(
       builder: (context, currentIndex) {
         final bool isSelected = currentIndex == index;
         return Expanded(
