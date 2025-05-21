@@ -65,6 +65,12 @@ class _LoginPageState extends State<LoginPage> {
 
     if (email.isEmpty || password.isEmpty) {
       setState(() {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Пожалуйста, заполните все поля"),
+            backgroundColor: Colors.deepOrange,
+          ),
+        );
         _errorMessage = "Пожалуйста, заполните все поля";
         _isLoading = false;
       });
@@ -73,6 +79,12 @@ class _LoginPageState extends State<LoginPage> {
 
     if (!_isValidEmail(email)) {
       setState(() {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Пожалуйста, введите корректный email"),
+            backgroundColor: Colors.deepOrange,
+          ),
+        );
         _errorMessage = "Пожалуйста, введите корректный email";
         _isLoading = false;
       });
@@ -92,6 +104,12 @@ class _LoginPageState extends State<LoginPage> {
       } else {
         if (mounted) {
           setState(() {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text("Не удалось войти. Проверьте email и пароль."),
+                backgroundColor: Colors.deepOrange,
+              ),
+            );
             _errorMessage = "Не удалось войти. Проверьте email и пароль.";
             _isLoading = false;
           });
@@ -104,7 +122,13 @@ class _LoginPageState extends State<LoginPage> {
       });
     } catch (e) {
       setState(() {
-        _errorMessage = "Err: ${e.toString()}";
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Произошла ошибка"),
+            backgroundColor: Colors.deepOrange,
+          ),
+        );
+        _errorMessage = "Произошла ошибка: ${e.toString()}";
         _isLoading = false;
       });
     }
@@ -124,6 +148,12 @@ class _LoginPageState extends State<LoginPage> {
 
     if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty || name.isEmpty) {
       setState(() {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Пожалуйста, заполните все поля"),
+            backgroundColor: Colors.deepOrange,
+          ),
+        );
         _errorMessage = "Пожалуйста, заполните все поля";
         _isLoading = false;
       });
@@ -132,6 +162,12 @@ class _LoginPageState extends State<LoginPage> {
 
     if (!_isValidEmail(email)) {
       setState(() {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Пожалуйста, введите корректный email"),
+            backgroundColor: Colors.deepOrange,
+          ),
+        );
         _errorMessage = "Пожалуйста, введите корректный email";
         _isLoading = false;
       });
@@ -141,6 +177,12 @@ class _LoginPageState extends State<LoginPage> {
     // Проверка совпадения паролей
     if (password != confirmPassword) {
       setState(() {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Пароли не совпадают"),
+            backgroundColor: Colors.deepOrange,
+          ),
+        );
         _errorMessage = "Пароли не совпадают";
         _isLoading = false;
       });
@@ -149,6 +191,12 @@ class _LoginPageState extends State<LoginPage> {
 
     if (password.length < 6) {
       setState(() {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Пароль должен содержать не менее 6 символов"),
+            backgroundColor: Colors.deepOrange,
+          ),
+        );
         _errorMessage = "Пароль должен содержать не менее 6 символов";
         _isLoading = false;
       });
@@ -179,6 +227,12 @@ class _LoginPageState extends State<LoginPage> {
       } else {
         if (mounted) {
           setState(() {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text("Не удалось зарегистрироваться. Попробуйте еще раз."),
+                backgroundColor: Colors.deepOrange,
+              ),
+            );
             _errorMessage = "Не удалось зарегистрироваться. Попробуйте еще раз.";
             _isLoading = false;
           });
@@ -191,6 +245,12 @@ class _LoginPageState extends State<LoginPage> {
       });
     } catch (e) {
       setState(() {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Произошла ошибка"),
+            backgroundColor: Colors.deepOrange,
+          ),
+        );
         _errorMessage = "Произошла ошибка: ${e.toString()}";
         _isLoading = false;
       });
@@ -295,6 +355,10 @@ class _LoginPageState extends State<LoginPage> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         backgroundColor: Color(0xFF187A3F),
       ),
       body: Column(

@@ -22,6 +22,10 @@ class ProductPage extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Color(0xFF187A3F),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
         ),
         body: Stack(
           children: [

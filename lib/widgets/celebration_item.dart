@@ -13,23 +13,26 @@ class CelebrationItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 100,
-      height: 100,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SvgPicture.asset(
-            celebration.svgPath,
-            width: 60,
-            height: 60,
-          ),
-          const SizedBox(height: 8), // Add some space between icon and text
-          Text(
-            celebration.name,
-            textAlign: TextAlign.center,
-          ),
-        ],
+    return Center(
+      child: Container(
+        width: 100,
+        height: 110,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SvgPicture.asset(
+              celebration.svgPath,
+              width: 60,
+              height: 60,
+            ),
+            const SizedBox(height: 8), // Add some space between icon and text
+            Text(
+              celebration.name,
+              textAlign: TextAlign.center,
+              style: TextStyle(fontWeight: FontWeight.w300),
+            ),
+          ],
+        ),
       ),
     );
   }

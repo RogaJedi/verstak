@@ -120,42 +120,53 @@ class HubPage extends StatelessWidget {
                   : WelcomePage(apiService: apiService, products: products),
             ];
 
-            return Stack(
-              children: [
-                Scaffold(
-                  appBar: AppBar(
-                    title: Center(
-                      child: Container(
-                        child: ElevatedButton(
-                            onPressed: () => print("something"),
-                            child: Text("add searchbar later")
+            return Scaffold(
+              appBar: AppBar(
+                title: currentIndex == 3 && authState is AuthAuthenticated
+                    ? Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: Colors.white,
+                          child: Text("U"),
                         ),
-                      ),
+                        SizedBox(width: 8),
+                        Text("User", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w300),)
+                      ],
                     ),
-                    backgroundColor: Color(0xFF187A3F),
-                  ),
-                  backgroundColor: Colors.white,
-                  body: pages[currentIndex],
-                  bottomNavigationBar: CustomBottomBar(
-                    activeIcons: [
-                      'assets/home_filled.svg',
-                      'assets/gift_filled.svg',
-                      'assets/cart_filled.svg',
-                      'assets/user_filled.svg',
-                    ],
-                    inactiveIcons: [
-                      'assets/home_empty.svg',
-                      'assets/gift_empty.svg',
-                      'assets/cart_empty.svg',
-                      'assets/user_empty.svg',
-                    ],
-                    onTap: (index) {
-                      context.read<NavigationCubit>().setPage(index);
-                    },
-                    backgroundColor: const Color(0xFF187A3F),
+                    Icon(Icons.search_rounded, color: Colors.white),
+                  ],
+                )
+                    : Center(
+                  child: ElevatedButton(
+                    onPressed: () => print("something"),
+                    child: Text("add searchbar later"),
                   ),
                 ),
-              ],
+                backgroundColor: Color(0xFF187A3F),
+              ),
+              backgroundColor: Colors.white,
+              body: pages[currentIndex],
+              bottomNavigationBar: CustomBottomBar(
+                activeIcons: [
+                  'assets/home_filled.svg',
+                  'assets/gift_filled.svg',
+                  'assets/cart_filled.svg',
+                  'assets/user_filled.svg',
+                ],
+                inactiveIcons: [
+                  'assets/home_empty.svg',
+                  'assets/gift_empty.svg',
+                  'assets/cart_empty.svg',
+                  'assets/user_empty.svg',
+                ],
+                onTap: (index) {
+                  context.read<NavigationCubit>().setPage(index);
+                },
+                backgroundColor: const Color(0xFF187A3F),
+              ),
             );
           },
         );

@@ -23,6 +23,7 @@ class GiftsPage extends StatelessWidget {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            SizedBox(height: 30,),
             const Text(
               "Для каждого праздника свой подарок!",
               style: TextStyle(
@@ -30,6 +31,7 @@ class GiftsPage extends StatelessWidget {
               ),
               textAlign: TextAlign.center,
             ),
+            SizedBox(height: 30,),
             SizedBox(
               height: 120,
               child: ListView.builder(
