@@ -7,6 +7,34 @@ import 'package:verstak/widgets/user_page_item.dart';
 class UserPage extends StatelessWidget {
   const UserPage({super.key});
 
+  Future<void> _showSignOutConfirmationDialog(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: Text('Выход из аккаунта'),
+          content: Text('Вы уверены, что хотите выйти из аккаунта?'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Отмена'),
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Выйти'),
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+                context.read<AuthCubit>().signOut();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -102,7 +130,7 @@ class UserPage extends StatelessWidget {
 
                       UserPageItem(
                         onTap: () {
-                          context.read<AuthCubit>().signOut();
+                          _showSignOutConfirmationDialog(context);
                         },
                         text: "Выйти из аккаунта",
                         hasCross: true,

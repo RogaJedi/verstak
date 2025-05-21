@@ -3,13 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:verstak/api_service.dart';
-import 'package:verstak/main.dart';
-import 'package:verstak/navigation_cubit.dart';
-import 'package:verstak/pages/user/welcome_page.dart';
-import 'package:verstak/product.dart';
+import 'package:verstak/models/product.dart';
 
+import '../../user_state_management/user_cubit.dart';
 import '../../widgets/custom_button.dart';
-import '../home_page.dart';
 
 
 class LoginPage extends StatefulWidget {
@@ -98,6 +95,8 @@ class _LoginPageState extends State<LoginPage> {
       );
 
       if (response.user != null) {
+        await context.read<UserCubit>().loadUserData();
+
         if (mounted) {
           Navigator.pop(context);
         }
@@ -214,7 +213,10 @@ class _LoginPageState extends State<LoginPage> {
 
       if (response.user != null) {
 
+        await context.read<UserCubit>().loadUserData();
+
         if (mounted) {
+
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text("Регистрация успешна!"),

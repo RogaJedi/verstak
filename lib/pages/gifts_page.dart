@@ -3,7 +3,7 @@ import 'package:verstak/widgets/celebration_item.dart';
 
 import '../api_service.dart';
 import '../demo_celebrations.dart';
-import '../product.dart';
+import '../models/product.dart';
 import '../widgets/product_card/product_card.dart';
 
 class GiftsPage extends StatelessWidget {

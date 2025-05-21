@@ -3,7 +3,7 @@ import 'package:verstak/widgets/big_card.dart';
 import 'package:verstak/widgets/product_carousel.dart';
 
 import '../api_service.dart';
-import '../product.dart';
+import '../models/product.dart';
 import '../widgets/product_card/product_card.dart';
 
 class HomePage extends StatelessWidget {

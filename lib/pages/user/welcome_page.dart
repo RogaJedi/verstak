@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:verstak/api_service.dart';
 import 'package:verstak/navigation_cubit.dart';
 import 'package:verstak/pages/user/login_page.dart';
-import 'package:verstak/product.dart';
+import 'package:verstak/models/product.dart';
 import 'package:verstak/widgets/custom_button.dart';
 
 class WelcomePage extends StatelessWidget {

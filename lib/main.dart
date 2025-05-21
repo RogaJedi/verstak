@@ -7,8 +7,10 @@ import 'package:verstak/pages/gifts_page.dart';
 import 'package:verstak/pages/home_page.dart';
 import 'package:verstak/pages/user/user_page.dart';
 import 'package:verstak/pages/user/welcome_page.dart';
-import 'package:verstak/product.dart';
+import 'package:verstak/models/product.dart';
 import 'package:verstak/product_loader/products_cubit.dart';
+import 'package:verstak/user_state_management/user_cubit.dart';
+import 'package:verstak/user_state_management/user_state.dart';
 import 'package:verstak/widgets/custom_bottom_bar.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -54,6 +56,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => NavigationCubit()),
         BlocProvider(create: (context) => ProductsCubit(apiService: apiService)),
         BlocProvider(create: (context) => AuthCubit()),
+        BlocProvider(create: (context) => UserCubit(apiService: apiService, productsCubit: context.read<ProductsCubit>(),),),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -126,15 +129,26 @@ class HubPage extends StatelessWidget {
                     ? Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
-                      children: [
-                        CircleAvatar(
-                          backgroundColor: Colors.white,
-                          child: Text("U"),
-                        ),
-                        SizedBox(width: 8),
-                        Text("User", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w300),)
-                      ],
+                    BlocBuilder<UserCubit, UserState>(
+                      builder: (context, userState) {
+                        if (userState is UserLoaded) {
+                          return Row(
+                            children: [
+                              CircleAvatar(
+                                backgroundColor: Colors.white,
+                                child: Text(userState.userProfile.name[0]),
+                              ),
+                              SizedBox(width: 8),
+                              Text(
+                                userState.userProfile.name,
+                                style: TextStyle(color: Colors.white, fontWeight: FontWeight.w300),
+                              )
+                            ],
+                          );
+                        } else {
+                          return SizedBox.shrink();
+                        }
+                      }
                     ),
                     Icon(Icons.search_rounded, color: Colors.white),
                   ],

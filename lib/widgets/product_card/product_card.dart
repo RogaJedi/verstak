@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:verstak/pages/product_page.dart';
 
 import '../../api_service.dart';
-import '../../product.dart';
+import '../../auth/auth_cubit.dart';
+import '../../models/product.dart';
 import 'PC_SM/PC_Bloc.dart';
 import 'PC_SM/PC_Event.dart';
 import 'PC_SM/PC_State.dart';
@@ -131,32 +132,39 @@ class ProductCard extends StatelessWidget {
                     )
                   ],
                 ),
-                Positioned(
-                  top: 1,
-                  right: 1,
-                  child: BlocBuilder<ProductCardBloc, ProductCardState>(
-                    builder: (context, state) {
+                BlocBuilder<AuthCubit, AppAuthState>(
+                    builder: (context, authState) {
+                      return authState is AuthAuthenticated
+                        ? Positioned(
+                        top: 1,
+                        right: 1,
+                        child: BlocBuilder<ProductCardBloc, ProductCardState>(
+                          builder: (context, state) {
 
-                      return IconButton(
-                        icon: Icon(
-                          state.favorite ? Icons.favorite : Icons.favorite_border,
-                          color: state.favorite ? Color(0xFFFF6183) : Colors.white,
-                        ),
-                        onPressed: () {
-                          context.read<ProductCardBloc>().add(
-                            ToggleFavoriteEvent(productId: product.productId),
-                          );
+                            return IconButton(
+                              icon: Icon(
+                                state.favorite ? Icons.favorite : Icons.favorite_border,
+                                color: state.favorite ? Color(0xFFFF6183) : Colors.white,
+                              ),
+                              onPressed: () {
+                                context.read<ProductCardBloc>().add(
+                                  ToggleFavoriteEvent(productId: product.productId),
+                                );
 
-                          if (state.error != null) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(state.error!)),
+                                if (state.error != null) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text(state.error!)),
+                                  );
+                                }
+                              },
                             );
-                          }
-                        },
-                      );
-                    },
-                  ),
-                ),
+                          },
+                        ),
+                      )
+                      : SizedBox.shrink();
+                    }
+                )
+
               ],
             ),
           ),

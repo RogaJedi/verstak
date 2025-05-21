@@ -2,7 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 
 import '../api_service.dart';
-import '../product.dart';
+import '../models/product.dart';
 
 part 'products_state.dart';
 

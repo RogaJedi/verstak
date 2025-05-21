@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:verstak/widgets/product_card/product_card.dart';
 import '../api_service.dart';
-import '../product.dart';
+import '../models/product.dart';
 
 class ProductCarousel extends StatelessWidget {
   final ApiService apiService;
