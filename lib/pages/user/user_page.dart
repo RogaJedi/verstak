@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:verstak/auth/auth_cubit.dart';
 import 'package:verstak/widgets/custom_button.dart';
-import 'package:verstak/widgets/user_page_item.dart';
+import 'package:verstak/widgets/user_related/user_page_item.dart';
 
 class UserPage extends StatelessWidget {
   const UserPage({super.key});

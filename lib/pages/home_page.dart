@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:verstak/widgets/big_card.dart';
-import 'package:verstak/widgets/product_carousel.dart';
+import 'package:verstak/widgets/product_related/product_carousel.dart';
 
 import '../api_service.dart';
 import '../models/product.dart';
-import '../widgets/product_card/product_card.dart';
+import '../widgets/product_related/product_card.dart';
 
 class HomePage extends StatelessWidget {
   final List<Product> products;
@@ -63,8 +63,8 @@ class HomePage extends StatelessWidget {
                       ),
                     ),
                     GridView.builder(
-                      shrinkWrap: true, // Add this
-                      physics: NeverScrollableScrollPhysics(), // Add this
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
                       padding: const EdgeInsets.all(8),
                       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,

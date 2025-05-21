@@ -117,7 +117,7 @@ class HubPage extends StatelessWidget {
             final List<Widget> pages = [
               HomePage(apiService: apiService, products: products),
               GiftsPage(apiService: apiService, products: products),
-              CartPage(),
+              CartPage(apiService: apiService, allProducts: products),
               authState is AuthAuthenticated
                   ? UserPage()
                   : WelcomePage(apiService: apiService, products: products),
