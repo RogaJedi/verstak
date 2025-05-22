@@ -24,11 +24,11 @@ class CartPage extends StatelessWidget {
     required this.allProducts,
   });
 
-  void navigateToOrderPage(BuildContext context) {
+  void navigateToOrderPage(BuildContext context, List<Product> products) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => OrderPage()
+        builder: (context) => OrderPage(products: products, apiService: apiService,)
       ),
     );
   }
@@ -58,22 +58,8 @@ class CartPage extends StatelessWidget {
                                     physics: const NeverScrollableScrollPhysics(),
                                     itemCount: userState.cartProducts.length,
                                     itemBuilder: (context, index) {
-                                      final cartProductId = userState.cartProducts[index].productId;
 
-                                      final product = allProducts.firstWhere(
-                                            (product) => product.productId == cartProductId,
-                                        orElse: () => Product(
-                                          productId: -1,
-                                          name: "Продукт не найден",
-                                          sellerId: "",
-                                          description: "",
-                                          price: 0,
-                                          images: [],
-                                          reviewScore: 0,
-                                          amountOfReviews: 0,
-                                          tags: [],
-                                        ),
-                                      );
+                                      final product = userState.cartProducts[index];
 
                                       return Column(
                                         children: [
@@ -89,7 +75,7 @@ class CartPage extends StatelessWidget {
                                 SizedBox(height: 20,),
                                 CustomButton(
                                     padding: 0,
-                                    onTap: () => navigateToOrderPage(context),
+                                    onTap: () => navigateToOrderPage(context, userState.cartProducts),
                                     splashColor: Colors.white.withValues(alpha: 0.1),
                                     highlightColor: Colors.white.withValues(alpha: 0.1),
                                     mainColor: Color(0xFF187A3F),

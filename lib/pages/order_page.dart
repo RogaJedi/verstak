@@ -1,7 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:verstak/api_service.dart';
+import 'package:verstak/widgets/order_item.dart';
+
+import '../models/product.dart';
 
 class OrderPage extends StatelessWidget {
-  OrderPage({super.key});
+  final List<Product> products;
+  final ApiService apiService;
+
+  OrderPage({
+    super.key,
+    required this.products,
+    required this.apiService
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +25,22 @@ class OrderPage extends StatelessWidget {
         backgroundColor: Color(0xFF187A3F),
       ),
       body: Center(
-        child: Text("OrderPage"),
+        child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: products.length,
+            itemBuilder: (context, index) {
+
+              return Column(
+                children: [
+                  OrderItem(product: products[index], apiService: apiService,),
+                  index != products.length - 1
+                      ? Divider()
+                      : SizedBox.shrink()
+                ],
+              );
+            }
+
+        ),
       ),
     );
   }
