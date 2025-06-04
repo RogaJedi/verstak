@@ -56,9 +56,9 @@ class SearchResultsPage extends StatelessWidget {
             padding: EdgeInsets.all(16),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
-              childAspectRatio: 0.7,
-              crossAxisSpacing: 16,
-              mainAxisSpacing: 16,
+              childAspectRatio: 0.9,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
             ),
             itemCount: searchResults.length,
             itemBuilder: (context, index) {

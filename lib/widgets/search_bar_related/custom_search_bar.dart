@@ -34,7 +34,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
 
     return Container(
       width: screenWidth * 0.9,
-      height: screenHeight * 0.04,
+      height: screenHeight * 0.05,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         color: Colors.white,
