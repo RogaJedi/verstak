@@ -13,6 +13,7 @@ import 'package:verstak/user_state_management/user_cubit.dart';
 import 'package:verstak/user_state_management/user_state.dart';
 import 'package:verstak/widgets/custom_bottom_bar.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:verstak/widgets/search_bar_related/custom_search_bar.dart';
 
 import 'api_service.dart';
 import 'auth/auth_cubit.dart';
@@ -60,6 +61,9 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          fontFamily: 'Montserrat'
+        ),
         home: BlocBuilder<ProductsCubit, ProductsState>(
           builder: (context, state) {
             if (state is ProductsLoaded) {
@@ -154,10 +158,7 @@ class HubPage extends StatelessWidget {
                   ],
                 )
                     : Center(
-                  child: ElevatedButton(
-                    onPressed: () => print("something"),
-                    child: Text("add searchbar later"),
-                  ),
+                  child: CustomSearchBar(onTap: () {}),
                 ),
                 backgroundColor: Color(0xFF187A3F),
               ),

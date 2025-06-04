@@ -21,7 +21,7 @@ class ProductCarousel extends StatelessWidget {
     return Stack(
       children: [
         SizedBox(
-          height: screenHeight * 0.3,
+          height: screenHeight * 0.25,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: products.length,

@@ -7,29 +7,60 @@ import 'package:verstak/widgets/user_related/user_page_item.dart';
 class UserPage extends StatelessWidget {
   const UserPage({super.key});
 
-  Future<void> _showSignOutConfirmationDialog(BuildContext context) async {
+
+  //context.read<AuthCubit>().signOut();
+  Future<void> _showSignOutConfirmationDialog(BuildContext context, double height) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: Text('Выход из аккаунта'),
-          content: Text('Вы уверены, что хотите выйти из аккаунта?'),
-          actions: <Widget>[
-            TextButton(
-              child: Text('Отмена'),
-              onPressed: () {
-                Navigator.of(dialogContext).pop();
-              },
+          content: Container(
+            height: height * 0.1,
+            child: Center(
+              child: Column(
+                children: [
+                  Text(
+                    'Выйти из аккаунта?',
+                    style: TextStyle(
+                        fontSize: 20
+                    ),
+                  ),
+                  SizedBox(height: 15,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(dialogContext).pop();
+                        },
+                        child: Text(
+                          'Отмена',
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.black
+                          ),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          context.read<AuthCubit>().signOut();
+                          Navigator.of(dialogContext).pop();
+                        },
+                        child: Text(
+                          'Да',
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.black
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
             ),
-            TextButton(
-              child: Text('Выйти'),
-              onPressed: () {
-                Navigator.of(dialogContext).pop();
-                context.read<AuthCubit>().signOut();
-              },
-            ),
-          ],
+          ),
         );
       },
     );
@@ -130,7 +161,7 @@ class UserPage extends StatelessWidget {
 
                       UserPageItem(
                         onTap: () {
-                          _showSignOutConfirmationDialog(context);
+                          _showSignOutConfirmationDialog(context, screenHeight);
                         },
                         text: "Выйти из аккаунта",
                         hasCross: true,

@@ -55,75 +55,34 @@ class ProductCard extends StatelessWidget {
                     fit: BoxFit.cover,
                   ),
                 ),
-                SizedBox(height: 2,),
-                Padding(
-                  padding: EdgeInsets.only(left: screenWidth * 0.045, right: screenWidth * 0.045),
-                  child: SizedBox(
-                    height: screenHeight * 0.045,
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      alignment: Alignment.centerLeft,
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width - screenWidth * 0.09,
-                        child: Text(
-                          product.name,
-                          style: const TextStyle(fontSize: 40),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                SizedBox(
+                  height: screenHeight * 0.0275,
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: Alignment.centerLeft,
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width - screenWidth * 0.5,
+                      child: Text(
+                        "${product.price} ₽",
+                        style: const TextStyle(fontSize: 20,),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
+                    ),
+                  )
+                ),
+                FittedBox(
+                  fit: BoxFit.scaleDown,
+                  alignment: Alignment.centerLeft,
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width - screenWidth * 0.09,
+                    child: Text(
+                      product.name,
+                      style: const TextStyle(fontSize: 25),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                ),
-                SizedBox(height: 2,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(left: screenWidth * 0.045),
-                      child: SizedBox(
-                        height: screenHeight * 0.02,
-                        child: FittedBox(
-                          fit: BoxFit.scaleDown,
-                          alignment: Alignment.centerLeft,
-                          child: SizedBox(
-                            width: MediaQuery.of(context).size.width - screenWidth * 0.5,
-                            child: Text(
-                              "${product.price} P",
-                              style: const TextStyle(fontSize: 40,),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        )
-                      ),
-                    ),
-                    Padding(
-                        padding: EdgeInsets.only(right: screenWidth * 0.045),
-                        child: SizedBox(
-                          height: screenHeight * 0.02,
-                          child: FittedBox(
-                            fit: BoxFit.scaleDown,
-                            alignment: Alignment.centerLeft,
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width - screenWidth * 0.9,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Icon(Icons.star, color: Color(0xFFf1c232), size: screenWidth * 0.037,),
-                                  Text(
-                                    "${product.reviewScore}",
-                                    style: TextStyle(
-                                      fontSize: screenWidth * 0.03,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        )
-                    ),
-                  ],
                 )
               ],
             ),

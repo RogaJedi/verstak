@@ -72,10 +72,104 @@ class CartUiItem extends StatelessWidget {
                   builder: (context, userState) {
                     if (userState is UserLoaded) {
                       return Positioned(
-                          top: 0,
-                          right: 0,
-                          child: GestureDetector(
-                              onTap: () {
+                          bottom: 0,
+                          right: 6,
+                          child: Container(
+                            width: screenWidth * 0.475,
+                            height: 20,
+                            color: Colors.transparent,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    GestureDetector(
+                                        onTap: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext dialogContext) {
+                                              return AlertDialog(
+                                                content: Container(
+                                                  height: screenHeight * 0.1,
+                                                  child: Center(
+                                                    child: Column(
+                                                      children: [
+                                                        Text(
+                                                            'Удалить товар?',
+                                                          style: TextStyle(
+                                                            fontSize: 20
+                                                          ),
+                                                        ),
+                                                        SizedBox(height: 15,),
+                                                        Row(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                          children: [
+                                                            TextButton(
+                                                              onPressed: () {
+                                                                Navigator.of(dialogContext).pop();
+                                                              },
+                                                              child: Text(
+                                                                  'Отмена',
+                                                                style: TextStyle(
+                                                                    fontSize: 20,
+                                                                  color: Colors.black
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            TextButton(
+                                                              onPressed: () {
+                                                                context.read<UserCubit>().removeFromCart(product.productId);
+                                                                Navigator.of(dialogContext).pop();
+                                                              },
+                                                              child: Text(
+                                                                  'Удалить',
+                                                                style: TextStyle(
+                                                                    fontSize: 20,
+                                                                    color: Colors.black
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          );
+                                        },
+                                        child: Icon(Icons.delete)
+                                    ),
+                                    Icon(Icons.share)
+                                  ],
+                                ),
+                                Text(
+                                  "${product.price} ₽",
+                                  style: TextStyle(
+                                      fontSize: 17.5
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                      );
+                    } else {
+                      return SizedBox.shrink();
+                    }
+                  }
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/*
+onTap: () {
                                 showDialog(
                                   context: context,
                                   builder: (BuildContext dialogContext) {
@@ -100,30 +194,5 @@ class CartUiItem extends StatelessWidget {
                                     );
                                   },
                                 );
-                              }, //
-                              child: Icon(Icons.more_vert_rounded)
-                          )
-                      );
-                    } else {
-                      return SizedBox.shrink();
-                    }
-                  }
-                ),
-                Positioned(
-                    bottom: 0,
-                    right: 6,
-                    child: Text(
-                        "${product.price} ₽",
-                      style: TextStyle(
-                        fontSize: 17.5
-                      ),
-                    )
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
+                              },
+ */

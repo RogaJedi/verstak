@@ -68,9 +68,9 @@ class HomePage extends StatelessWidget {
                       padding: const EdgeInsets.all(8),
                       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
-                        childAspectRatio: 0.825,
+                        childAspectRatio: 0.9,
                         crossAxisSpacing: 10,
-                        mainAxisSpacing: 20,
+                        mainAxisSpacing: 10,
                       ),
                       itemCount: products.length,
                       itemBuilder: (context, index) {
