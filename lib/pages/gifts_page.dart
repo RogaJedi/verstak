@@ -4,10 +4,10 @@ import 'package:verstak/widgets/celebration_item.dart';
 import '../api_service.dart';
 import '../demo_celebrations.dart';
 import '../models/product.dart';
+import '../widgets/gift_page_scroll_indicator.dart';
 import '../widgets/product_related/product_card.dart';
 
-class GiftsPage extends StatelessWidget {
-
+class GiftsPage extends StatefulWidget {
   final ApiService apiService;
   final List<Product> products;
 
@@ -18,7 +18,41 @@ class GiftsPage extends StatelessWidget {
   });
 
   @override
+  _GiftsPageState createState() => _GiftsPageState();
+}
+
+class _GiftsPageState extends State<GiftsPage> {
+  final ScrollController _scrollController = ScrollController();
+  double _scrollPosition = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_updateScrollPosition);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_updateScrollPosition);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _updateScrollPosition() {
+    if (_scrollController.position.maxScrollExtent > 0) {
+      setState(() {
+        _scrollPosition = _scrollController.offset / _scrollController.position.maxScrollExtent;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    // Получаем ширину экрана для расчета ширины индикатора
+    final screenWidth = MediaQuery.of(context).size.width;
+    // Ширина индикатора - 20% от ширины экрана
+    final indicatorWidth = screenWidth * 0.2;
+
     return Scaffold(
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -35,6 +69,7 @@ class GiftsPage extends StatelessWidget {
             SizedBox(
               height: 120,
               child: ListView.builder(
+                controller: _scrollController, // Добавляем контроллер
                 scrollDirection: Axis.horizontal,
                 itemCount: DemoCelebrations.length,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -46,13 +81,19 @@ class GiftsPage extends StatelessWidget {
                 },
               ),
             ),
-            Divider(),
+            SizedBox(height: 2.5,),
+            ScrollIndicator(
+              width: screenWidth,
+              indicatorWidth: indicatorWidth,
+              position: _scrollPosition,
+            ),
+            SizedBox(height: 10,),
             Expanded(
                 child: ListView(
                   children: [
                     GridView.builder(
-                      shrinkWrap: true, // Add this
-                      physics: NeverScrollableScrollPhysics(), // Add this
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
                       padding: const EdgeInsets.all(8),
                       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
@@ -60,9 +101,9 @@ class GiftsPage extends StatelessWidget {
                         crossAxisSpacing: 10,
                         mainAxisSpacing: 15,
                       ),
-                      itemCount: products.length,
+                      itemCount: widget.products.length,
                       itemBuilder: (context, index) {
-                        return ProductCard(product: products[index], apiService: apiService,);
+                        return ProductCard(product: widget.products[index], apiService: widget.apiService);
                       },
                     ),
                   ],

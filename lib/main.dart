@@ -14,6 +14,8 @@ import 'package:verstak/user_state_management/user_state.dart';
 import 'package:verstak/widgets/custom_bottom_bar.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:verstak/widgets/search_bar_related/custom_search_bar.dart';
+import 'package:verstak/widgets/search_bar_related/search_bar_state_management.dart';
+import 'package:verstak/widgets/search_bar_related/search_results_page.dart';
 
 import 'api_service.dart';
 import 'auth/auth_cubit.dart';
@@ -101,91 +103,122 @@ class MyApp extends StatelessWidget {
 }
 
 
-class HubPage extends StatelessWidget {
-  final List<Product> products;
+class HubPage extends StatefulWidget {
   final ApiService apiService;
+  final List<Product> products;
 
-
-  HubPage({
-    super.key,
-    required this.products,
+  const HubPage({
+    Key? key,
     required this.apiService,
-  });
+    required this.products,
+  }) : super(key: key);
+
+  @override
+  _HubPageState createState() => _HubPageState();
+}
+
+class _HubPageState extends State<HubPage> {
+  late SearchCubit _searchCubit;
+  bool _isSearching = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _searchCubit = SearchCubit(allProducts: widget.products);
+  }
+
+  @override
+  void dispose() {
+    _searchCubit.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<NavigationCubit, int>(
-      builder: (context, currentIndex) {
-        return BlocBuilder<AuthCubit, AppAuthState>(
-          builder: (context, authState) {
-            final List<Widget> pages = [
-              HomePage(apiService: apiService, products: products),
-              GiftsPage(apiService: apiService, products: products),
-              CartPage(apiService: apiService, allProducts: products),
-              authState is AuthAuthenticated
-                  ? UserPage()
-                  : WelcomePage(apiService: apiService, products: products),
-            ];
+    return BlocProvider(
+      create: (context) => _searchCubit,
+      child: BlocBuilder<NavigationCubit, int>(
+        builder: (context, currentIndex) {
+          return BlocBuilder<AuthCubit, AppAuthState>(
+            builder: (context, authState) {
+              return BlocBuilder<SearchCubit, SearchState>(
+                builder: (context, searchState) {
+                  final List<Widget> pages = [
+                    HomePage(apiService: widget.apiService, products: widget.products),
+                    GiftsPage(apiService: widget.apiService, products: widget.products),
+                    CartPage(apiService: widget.apiService, allProducts: widget.products),
+                    authState is AuthAuthenticated
+                        ? UserPage()
+                        : WelcomePage(apiService: widget.apiService, products: widget.products),
+                  ];
 
-            return Scaffold(
-              appBar: AppBar(
-                title: currentIndex == 3 && authState is AuthAuthenticated
-                    ? Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    BlocBuilder<UserCubit, UserState>(
-                      builder: (context, userState) {
-                        if (userState is UserLoaded) {
-                          return Row(
-                            children: [
-                              CircleAvatar(
-                                backgroundColor: Colors.white,
-                                child: Text(userState.userProfile.name[0]),
-                              ),
-                              SizedBox(width: 8),
-                              Text(
-                                userState.userProfile.name,
-                                style: TextStyle(color: Colors.white, fontWeight: FontWeight.w300),
-                              )
-                            ],
-                          );
-                        } else {
-                          return SizedBox.shrink();
-                        }
-                      }
+                  // Определяем, что показывать в body
+                  Widget body;
+                  if (searchState is SearchResults) {
+                    body = SearchResultsPage(
+                      searchResults: searchState.results,
+                      searchQuery: searchState.query, apiService: widget.apiService,
+                    );
+                  } else {
+                    body = pages[currentIndex];
+                  }
+
+                  return Scaffold(
+                    appBar: AppBar(
+                      backgroundColor: Color(0xFF187A3F),
+                      elevation: 0,
+                      title: CustomSearchBar(
+                        readOnly: !_isSearching,
+                        onTap: () {
+                          setState(() {
+                            _isSearching = true;
+                          });
+                        },
+                        onSearch: (query) {
+                          _searchCubit.search(query);
+                        },
+                      ),
+                      leading: searchState is! SearchInitial || _isSearching
+                          ? IconButton(
+                        icon: Icon(Icons.arrow_back),
+                        onPressed: () {
+                          setState(() {
+                            _isSearching = false;
+                          });
+                          _searchCubit.clearSearch();
+                        },
+                      )
+                          : null,
                     ),
-                    Icon(Icons.search_rounded, color: Colors.white),
-                  ],
-                )
-                    : Center(
-                  child: CustomSearchBar(onTap: () {}),
-                ),
-                backgroundColor: Color(0xFF187A3F),
-              ),
-              backgroundColor: Colors.white,
-              body: pages[currentIndex],
-              bottomNavigationBar: CustomBottomBar(
-                activeIcons: [
-                  'assets/home_filled.svg',
-                  'assets/gift_filled.svg',
-                  'assets/cart_filled.svg',
-                  'assets/user_filled.svg',
-                ],
-                inactiveIcons: [
-                  'assets/home_empty.svg',
-                  'assets/gift_empty.svg',
-                  'assets/cart_empty.svg',
-                  'assets/user_empty.svg',
-                ],
-                onTap: (index) {
-                  context.read<NavigationCubit>().setPage(index);
+                    body: body,
+                    bottomNavigationBar: searchState is SearchInitial
+                        ? CustomBottomBar(
+                      activeIcons: [
+                        'assets/home_filled.svg',
+                        'assets/gift_filled.svg',
+                        'assets/cart_filled.svg',
+                        'assets/user_filled.svg',
+                      ],
+                      inactiveIcons: [
+                        'assets/home_empty.svg',
+                        'assets/gift_empty.svg',
+                        'assets/cart_empty.svg',
+                        'assets/user_empty.svg',
+                      ],
+                      onTap: (index) {
+                        context.read<NavigationCubit>().setPage(index);
+                      },
+                      backgroundColor: const Color(0xFF187A3F),
+                    )
+                        : null,
+                  );
                 },
-                backgroundColor: const Color(0xFF187A3F),
-              ),
-            );
-          },
-        );
-      },
+              );
+            },
+          );
+        },
+      ),
     );
   }
-}
+}            
+    
